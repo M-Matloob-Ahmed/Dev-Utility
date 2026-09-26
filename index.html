@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetToolKit - Bandwidth & Subnet Calculator</title>
+    <meta name="description" content="Free developer & network utility tool to calculate data transfer speeds, file download times, and IPv4 subnetting specifications.">
+    
+    <!-- Modern Styling -->
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        header { background: #1e293b; color: white; padding: 1.5rem 2rem; text-align: center; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card { background: var(--card); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
+        input, select { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 0.5rem; }
+        button:hover { background: #1d4ed8; }
+        .result-box { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1rem; margin-top: 1rem; font-weight: bold; }
+        .ad-placeholder { background: #e2e8f0; border: 2px dashed #94a3b8; padding: 1rem; text-align: center; color: #64748b; margin: 1.5rem 0; border-radius: 4px; }
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 2rem; margin-top: 3rem; font-size: 0.9rem; }
+        footer a { color: white; margin: 0 0.5rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NetToolKit</h1>
+        <p>Developer & Network Utility Suite</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Top Ad Slot -->
+        <div class="ad-placeholder">
+            <small>ADVERTISEMENT SLOT</small>
+            <!-- Paste AdSense Head/Banner Code Here -->
+        </div>
+
+        <div class="grid">
+            <!-- Tool 1: Bandwidth & File Transfer Calculator -->
+            <div class="card">
+                <h2>⚡ Data Transfer Calculator</h2>
+                <div class="form-group">
+                    <label>File Size</label>
+                    <input type="number" id="fileSize" value="10" min="0.1" step="any">
+                </div>
+                <div class="form-group">
+                    <label>Unit</label>
+                    <select id="sizeUnit">
+                        <option value="MB">Megabytes (MB)</option>
+                        <option value="GB" selected>Gigabytes (GB)</option>
+                        <option value="TB">Terabytes (TB)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Internet Speed (Mbps)</label>
+                    <input type="number" id="netSpeed" value="100" min="1">
+                </div>
+                <button onclick="calculateTransfer()">Calculate Time</button>
+
+                <div class="result-box" id="transferResult">
+                    Estimated Time: 1m 25s
+                </div>
+            </div>
+
+            <!-- Tool 2: Subnet Mask Reference & CIDR Helper -->
+            <div class="card">
+                <h2>🌐 CIDR Subnet Calculator</h2>
+                <div class="form-group">
+                    <label>Select CIDR Prefix</label>
+                    <select id="cidrSelect" onchange="calculateSubnet()">
+                        <option value="24" selected>/24 (255.255.255.0)</option>
+                        <option value="25">/25 (255.255.255.128)</option>
+                        <option value="26">/26 (255.255.255.192)</option>
+                        <option value="27">/27 (255.255.255.224)</option>
+                        <option value="28">/28 (255.255.255.240)</option>
+                    </select>
+                </div>
+                <div class="result-box" id="subnetResult">
+                    Usable Hosts: 254<br>
+                    Subnet Mask: 255.255.255.0
+                </div>
+            </div>
+        </div>
+
+        <!-- In-Content Ad Slot -->
+        <div class="ad-placeholder">
+            <small>IN-ARTICLE ADVERTISEMENT SLOT</small>
+        </div>
+
+        <!-- Text Content Section (Essential for Passing AdSense Content Requirements) -->
+        <div class="card">
+            <h2>How Network Data Calculations Work</h2>
+            <p>When transferring large files over a network connection, network overhead, protocol handshakes, and bits-to-bytes conversion play a key role in actual transfer speed.</p>
+            <h3>Understanding Bits vs. Bytes</h3>
+            <p>Internet Service Providers (ISPs) measure network bandwidth in <strong>bits per second (Mbps or Gbps)</strong>, whereas storage devices measure file size in <strong>Bytes (MB or GB)</strong>. Because 1 Byte contains 8 bits, a 100 Mbps internet connection transfers a maximum theoretical speed of 12.5 MB per second.</p>
+            <h3>Subnetting & Host Capacity</h3>
+            <p>CIDR notation (Classless Inter-Domain Routing) defines the size of an IP address block. Subnet masks specify how many bits belong to the network portion and how many remain for host devices. Subtracting 2 address slots (Network ID and Broadcast Address) provides the total count of usable host IPs in any subnet block.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 NetToolKit. All rights reserved.</p>
+        <p>
+            <a href="#about">About Us</a> | 
+            <a href="#privacy">Privacy Policy</a> | 
+            <a href="#contact">Contact</a>
+        </p>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        function calculateTransfer() {
+            const size = parseFloat(document.getElementById('fileSize').value);
+            const unit = document.getElementById('sizeUnit').value;
+            const speedMbps = parseFloat(document.getElementById('netSpeed').value);
+
+            if (!size || !speedMbps || speedMbps <= 0) {
+                document.getElementById('transferResult').innerHTML = "Please enter valid values.";
+                return;
+            }
+
+            // Convert everything to Megabits
+            let sizeInMb = 0;
+            if (unit === 'MB') sizeInMb = size * 8;
+            if (unit === 'GB') sizeInMb = size * 1024 * 8;
+            if (unit === 'TB') sizeInMb = size * 1024 * 1024 * 8;
+
+            const totalSeconds = Math.round(sizeInMb / speedMbps);
+            
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            let resultString = "Estimated Time: ";
+            if (hours > 0) resultString += `${hours}h `;
+            if (minutes > 0 || hours > 0) resultString += `${minutes}m `;
+            resultString += `${seconds}s`;
+
+            document.getElementById('transferResult').innerHTML = resultString;
+        }
+
+        function calculateSubnet() {
+            const cidr = document.getElementById('cidrSelect').value;
+            const hostsMap = {
+                "24": { hosts: 254, mask: "255.255.255.0" },
+                "25": { hosts: 126, mask: "255.255.255.128" },
+                "26": { hosts: 62, mask: "255.255.255.192" },
+                "27": { hosts: 30, mask: "255.255.255.224" },
+                "28": { hosts: 14, mask: "255.255.255.240" }
+            };
+
+            const data = hostsMap[cidr];
+            document.getElementById('subnetResult').innerHTML = `Usable Hosts: ${data.hosts}<br>Subnet Mask: ${data.mask}`;
+        }
+    </script>
+</body>
+</html>
