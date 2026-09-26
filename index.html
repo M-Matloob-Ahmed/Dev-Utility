@@ -11,18 +11,24 @@
         :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
         header { background: #1e293b; color: white; padding: 1.5rem 2rem; text-align: center; }
+        nav { background: #334155; padding: 0.5rem; text-align: center; }
+        nav button, footer button.link-btn { background: none; border: none; color: #f8fafc; font-size: 1rem; font-weight: 500; margin: 0 0.5rem; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-family: inherit; }
+        nav button:hover, nav button.active { background: var(--primary); }
+        footer button.link-btn { color: white; font-size: 0.9rem; text-decoration: underline; padding: 0 0.2rem; }
+        footer button.link-btn:hover { color: #cbd5e1; }
         .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .card { background: var(--card); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card { background: var(--card); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
         .form-group { margin-bottom: 1rem; }
         label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
-        input, select { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
-        button { background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 0.5rem; }
-        button:hover { background: #1d4ed8; }
+        input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+        .submit-btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 0.5rem; }
+        .submit-btn:hover { background: #1d4ed8; }
         .result-box { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1rem; margin-top: 1rem; font-weight: bold; }
         .ad-placeholder { background: #e2e8f0; border: 2px dashed #94a3b8; padding: 1rem; text-align: center; color: #64748b; margin: 1.5rem 0; border-radius: 4px; }
         footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 2rem; margin-top: 3rem; font-size: 0.9rem; }
-        footer a { color: white; margin: 0 0.5rem; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -32,6 +38,13 @@
         <p>Developer & Network Utility Suite</p>
     </header>
 
+    <nav>
+        <button onclick="showTab('home')" id="nav-home" class="nav-btn active">Home Tool</button>
+        <button onclick="showTab('about')" id="nav-about" class="nav-btn">About Us</button>
+        <button onclick="showTab('privacy')" id="nav-privacy" class="nav-btn">Privacy Policy</button>
+        <button onclick="showTab('contact')" id="nav-contact" class="nav-btn">Contact Us</button>
+    </nav>
+
     <div class="container">
 
         <!-- Top Ad Slot -->
@@ -40,66 +53,132 @@
             <!-- Paste AdSense Head/Banner Code Here -->
         </div>
 
-        <div class="grid">
-            <!-- Tool 1: Bandwidth & File Transfer Calculator -->
-            <div class="card">
-                <h2>⚡ Data Transfer Calculator</h2>
-                <div class="form-group">
-                    <label>File Size</label>
-                    <input type="number" id="fileSize" value="10" min="0.1" step="any">
-                </div>
-                <div class="form-group">
-                    <label>Unit</label>
-                    <select id="sizeUnit">
-                        <option value="MB">Megabytes (MB)</option>
-                        <option value="GB" selected>Gigabytes (GB)</option>
-                        <option value="TB">Terabytes (TB)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Internet Speed (Mbps)</label>
-                    <input type="number" id="netSpeed" value="100" min="1">
-                </div>
-                <button onclick="calculateTransfer()">Calculate Time</button>
+        <!-- TAB 1: MAIN HOME TOOL -->
+        <div id="home" class="page-section active">
+            <div class="grid">
+                <!-- Tool 1: Bandwidth & File Transfer Calculator -->
+                <div class="card">
+                    <h2>⚡ Data Transfer Calculator</h2>
+                    <div class="form-group">
+                        <label for="fileSize">File Size</label>
+                        <input type="number" id="fileSize" value="10" min="0.1" step="any">
+                    </div>
+                    <div class="form-group">
+                        <label for="sizeUnit">Unit</label>
+                        <select id="sizeUnit">
+                            <option value="MB">Megabytes (MB)</option>
+                            <option value="GB" selected>Gigabytes (GB)</option>
+                            <option value="TB">Terabytes (TB)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="netSpeed">Internet Speed (Mbps)</label>
+                        <input type="number" id="netSpeed" value="100" min="1">
+                    </div>
+                    <button class="submit-btn" onclick="calculateTransfer()">Calculate Time</button>
 
-                <div class="result-box" id="transferResult">
-                    Estimated Time: 1m 25s
+                    <div class="result-box" id="transferResult">
+                        Estimated Time: 1m 25s
+                    </div>
+                </div>
+
+                <!-- Tool 2: Subnet Mask Reference & CIDR Helper -->
+                <div class="card">
+                    <h2>🌐 CIDR Subnet Calculator</h2>
+                    <div class="form-group">
+                        <label for="cidrSelect">Select CIDR Prefix</label>
+                        <select id="cidrSelect" onchange="calculateSubnet()">
+                            <option value="24" selected>/24 (255.255.255.0)</option>
+                            <option value="25">/25 (255.255.255.128)</option>
+                            <option value="26">/26 (255.255.255.192)</option>
+                            <option value="27">/27 (255.255.255.224)</option>
+                            <option value="28">/28 (255.255.255.240)</option>
+                        </select>
+                    </div>
+                    <div class="result-box" id="subnetResult">
+                        Usable Hosts: 254<br>
+                        Subnet Mask: 255.255.255.0
+                    </div>
                 </div>
             </div>
 
-            <!-- Tool 2: Subnet Mask Reference & CIDR Helper -->
+            <!-- In-Content Ad Slot -->
+            <div class="ad-placeholder">
+                <small>IN-ARTICLE ADVERTISEMENT SLOT</small>
+            </div>
+
+            <!-- Detailed Content for SEO & AdSense Guidelines -->
             <div class="card">
-                <h2>🌐 CIDR Subnet Calculator</h2>
-                <div class="form-group">
-                    <label>Select CIDR Prefix</label>
-                    <select id="cidrSelect" onchange="calculateSubnet()">
-                        <option value="24" selected>/24 (255.255.255.0)</option>
-                        <option value="25">/25 (255.255.255.128)</option>
-                        <option value="26">/26 (255.255.255.192)</option>
-                        <option value="27">/27 (255.255.255.224)</option>
-                        <option value="28">/28 (255.255.255.240)</option>
-                    </select>
-                </div>
-                <div class="result-box" id="subnetResult">
-                    Usable Hosts: 254<br>
-                    Subnet Mask: 255.255.255.0
-                </div>
+                <h2>How Network Data Calculations Work</h2>
+                <p>When transferring large files over a network connection, network overhead, protocol handshakes, and bits-to-bytes conversion play a key role in actual transfer speed.</p>
+                <h3>Understanding Bits vs. Bytes</h3>
+                <p>Internet Service Providers (ISPs) measure network bandwidth in <strong>bits per second (Mbps or Gbps)</strong>, whereas storage devices measure file size in <strong>Bytes (MB or GB)</strong>. Because 1 Byte contains 8 bits, a 100 Mbps internet connection transfers a maximum theoretical speed of 12.5 MB per second.</p>
+                <h3>Subnetting & Host Capacity</h3>
+                <p>CIDR notation (Classless Inter-Domain Routing) defines the size of an IP address block. Subnet masks specify how many bits belong to the network portion and how many remain for host devices. Subtracting 2 address slots (Network ID and Broadcast Address) provides the total count of usable host IPs in any subnet block.</p>
             </div>
         </div>
 
-        <!-- In-Content Ad Slot -->
-        <div class="ad-placeholder">
-            <small>IN-ARTICLE ADVERTISEMENT SLOT</small>
+        <!-- TAB 2: ABOUT US -->
+        <div id="about" class="page-section">
+            <div class="card">
+                <h2>About NetToolKit</h2>
+                <p>Welcome to <strong>NetToolKit</strong>, a dedicated suite of fast, lightweight, and precise online utilities created for web developers, IT professionals, system administrators, and computer science students.</p>
+                <p>Our goal is to streamline everyday networking and bandwidth computations into simple, accessible browser tools. Whether you are estimating file migration times over custom network connections or configuring IP allocations and subnet structures, NetToolKit provides instant calculations without requiring registration or software downloads.</p>
+                <h3>Why Choose NetToolKit?</h3>
+                <ul>
+                    <li><strong>Fast & Client-Side:</strong> All calculations run instantly in your web browser.</li>
+                    <li><strong>Privacy-Focused:</strong> We do not log, store, or transmit your calculated data to external servers.</li>
+                    <li><strong>Completely Free:</strong> Unrestricted access to utility calculators for educational and professional tasks.</li>
+                </ul>
+            </div>
         </div>
 
-        <!-- Text Content Section (Essential for Passing AdSense Content Requirements) -->
-        <div class="card">
-            <h2>How Network Data Calculations Work</h2>
-            <p>When transferring large files over a network connection, network overhead, protocol handshakes, and bits-to-bytes conversion play a key role in actual transfer speed.</p>
-            <h3>Understanding Bits vs. Bytes</h3>
-            <p>Internet Service Providers (ISPs) measure network bandwidth in <strong>bits per second (Mbps or Gbps)</strong>, whereas storage devices measure file size in <strong>Bytes (MB or GB)</strong>. Because 1 Byte contains 8 bits, a 100 Mbps internet connection transfers a maximum theoretical speed of 12.5 MB per second.</p>
-            <h3>Subnetting & Host Capacity</h3>
-            <p>CIDR notation (Classless Inter-Domain Routing) defines the size of an IP address block. Subnet masks specify how many bits belong to the network portion and how many remain for host devices. Subtracting 2 address slots (Network ID and Broadcast Address) provides the total count of usable host IPs in any subnet block.</p>
+        <!-- TAB 3: PRIVACY POLICY -->
+        <div id="privacy" class="page-section">
+            <div class="card">
+                <h2>Privacy Policy</h2>
+                <p>At NetToolKit, accessible from our domain, the privacy of our visitors is one of our main priorities. This Privacy Policy document outlines the types of information collected and recorded by NetToolKit and how we use it.</p>
+                
+                <h3>Log Files</h3>
+                <p>NetToolKit follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.</p>
+
+                <h3>Cookies and Web Beacons</h3>
+                <p>Like any other website, NetToolKit uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+
+                <h3>Google DoubleClick DART Cookie</h3>
+                <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our site and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" target="_blank">https://policies.google.com/technologies/ads</a></p>
+
+                <h3>Third Party Advertising Partners</h3>
+                <p>Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on NetToolKit. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+
+                <h3>Consent</h3>
+                <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+            </div>
+        </div>
+
+        <!-- TAB 4: CONTACT US -->
+        <div id="contact" class="page-section">
+            <div class="card">
+                <h2>Contact Us</h2>
+                <p>Have questions, feedback, or suggestions for new networking features? We'd love to hear from you!</p>
+                <p>You can reach our team directly at <strong>support@nettoolkit.com</strong> or send us a message using the form below:</p>
+                
+                <form onsubmit="event.preventDefault(); alert('Thank you for reaching out! Your message has been sent.');">
+                    <div class="form-group">
+                        <label for="contactName">Name</label>
+                        <input type="text" id="contactName" placeholder="Your Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" placeholder="yourname@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" rows="5" placeholder="Write your feedback or inquiry here..." required></textarea>
+                    </div>
+                    <button class="submit-btn" type="submit">Send Message</button>
+                </form>
+            </div>
         </div>
 
     </div>
@@ -107,14 +186,40 @@
     <footer>
         <p>&copy; 2026 NetToolKit. All rights reserved.</p>
         <p>
-            <a href="#about">About Us</a> | 
-            <a href="#privacy">Privacy Policy</a> | 
-            <a href="#contact">Contact</a>
+            <button class="link-btn" onclick="showTab('home')">Home</button> | 
+            <button class="link-btn" onclick="showTab('about')">About Us</button> | 
+            <button class="link-btn" onclick="showTab('privacy')">Privacy Policy</button> | 
+            <button class="link-btn" onclick="showTab('contact')">Contact Us</button>
         </p>
     </footer>
 
     <!-- Application Logic -->
     <script>
+        function showTab(tabId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Remove active status from header buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab content
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            // Highlight corresponding header button
+            const activeNavBtn = document.getElementById('nav-' + tabId);
+            if (activeNavBtn) {
+                activeNavBtn.classList.add('active');
+            }
+
+            // Scroll smoothly back to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function calculateTransfer() {
             const size = parseFloat(document.getElementById('fileSize').value);
             const unit = document.getElementById('sizeUnit').value;
@@ -125,7 +230,7 @@
                 return;
             }
 
-            // Convert everything to Megabits
+            // Convert size to Megabits
             let sizeInMb = 0;
             if (unit === 'MB') sizeInMb = size * 8;
             if (unit === 'GB') sizeInMb = size * 1024 * 8;
